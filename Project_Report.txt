@@ -38,6 +38,143 @@ The notebook loads a file named “smartphones.csv”. The notebook itself does 
 
 The notebook loads a file named “smartphones.csv”. The notebook itself does not record the original public URL or publisher of the dataset, so this report does not assign an external source that is not documented in the project files.
 
+5. Tools and Technologies
+•	Python programming language
+•	Jupyter Notebook
+•	Pandas for data loading and manipulation
+•	NumPy for numerical calculations
+•	Matplotlib for visualization
+•	Seaborn for statistical visualization
+•	Scikit-learn for train/test splitting, linear regression and evaluation metrics
+
+6. Methodology
+The project follows a supervised learning workflow. The smartphone price is treated as the continuous target variable. The analysis first examines RAM independently and then uses Multiple Linear Regression to model price from a set of numerical features.
+1.	Load the smartphone dataset into a Pandas DataFrame.
+2.	Inspect dimensions, column names, data types and descriptive statistics.
+3.	Check missing values and duplicate records.
+4.	Identify price outliers using the IQR rule.
+5.	Perform exploratory statistical analysis and visualization.
+6.	Select numerical explanatory variables and separate them from the target.
+7.	Remove rows with missing values among the selected model features.
+8.	Split the cleaned modeling data into 80% training and 20% testing sets.
+9.	Train a Multiple Linear Regression model.
+10.	Generate predictions and evaluate model performance.
+11.	Train a RAM-only model and compare its performance with the multiple regression model.
+7. Data Preprocessing
+
+7.1 Dataset Size and Data Types
+The dataset contains 758 observations and 27 variables. The notebook shows that the numerical fields include price, rating, processor characteristics, RAM, storage, display characteristics, battery, charging and camera measurements. Boolean and object columns are also present.
+
+7.2 Missing Values
+
+For the regression model, front_camera_main_mp is one of the selected predictors. Therefore, the five records with missing values in this selected feature were excluded using dropna(). The resulting modeling dataset contained 753 observations. The memory-card columns were not included among the selected regression predictors.
+7.3 Duplicate Records
+The notebook reports zero duplicate records. Therefore, no duplicate rows were removed.
+7.4 Outlier Analysis
+The Interquartile Range (IQR) method was applied to price_inr. The first quartile (Q1) was ₹11,857.25 and the third quartile (Q3) was ₹29,990.00. The resulting IQR was ₹18,132.75. Using the 1.5×IQR rule, 80 observations were identified as potential price outliers. The notebook displays examples including premium devices with high prices and large storage or specialized specifications. The notebook does not remove these observations, so they were retained in the subsequent analysis.
+
+8. Exploratory Data Analysis
+8.1 Descriptive Statistics
+
+The mean smartphone price is higher than the median price, indicating a right-skewed price distribution in the dataset. The standard deviation is also large relative to the mean, showing substantial variation in smartphone prices.
+8.2 RAM Distribution
+The dataset contains RAM configurations from 2 GB to 24 GB. The most common configuration in the dataset is 8 GB, with 328 smartphones. Other frequently represented configurations include 12 GB (147 smartphones) and 4 GB (136 smartphones).
+
+8.3 RAM and Price Correlation
+The Pearson correlation calculated in the notebook between ram_gb and price_inr is 0.5480. This represents a moderate positive linear association: smartphones with higher RAM capacity tend to have higher prices in this dataset. Correlation, however, does not by itself establish that increasing RAM causes the observed increase in price.
+
+8.4 Correlation with Other Numerical Features
+
+Among the numerical variables examined, clock speed and storage show stronger positive correlations with price than RAM. This supports the use of Multiple Linear Regression rather than relying on RAM as the only predictor.
+
+9. Model Building
+9.1 Multiple Linear Regression Features
+The model uses the following 11 predictors:
+•	ram_gb
+•	storage_gb
+•	rating_score
+•	core_count
+•	clock_speed_ghz
+•	display_inches
+•	refresh_rate_hz
+•	battery_mah
+•	charging_watt
+•	rear_camera_main_mp
+•	front_camera_main_mp
+Target variable: price_inr.
+9.2 Train/Test Split
+After removing the five rows with missing values in the selected predictors, 753 observations remained. The data was divided using an 80:20 train/test split with random_state=42. This produced 602 training observations and 151 testing observations.
+9.3 Multiple Linear Regression
+A LinearRegression model from scikit-learn was fitted using the 11 selected predictors. The model was trained on the training set and used to predict prices for the unseen test set.
+10. Model Evaluation
+
+The R² value of 0.6724 indicates that approximately 67.24% of the variation in test-set smartphone prices is explained by the linear combination of the selected predictors in this model. The Adjusted R² is 0.6465 after accounting for the number of predictors. The MAE of ₹10,069.18 means that the average absolute prediction error on the test set is about ₹10,069. The RMSE of ₹16,856.03 gives greater weight to larger errors and is therefore higher than the MAE.
+11. Interpretation of Regression Coefficients
+The coefficients below represent the fitted association between each predictor and price while holding the other predictors in the model constant. They should not be interpreted as causal effects because the dataset is observational and the predictors are themselves correlated.
+
+For RAM specifically, the fitted multiple regression coefficient is approximately ₹637.05. Under the ceteris paribus interpretation of the fitted linear model, a one-unit increase in RAM (1 GB) is associated with an estimated ₹637 increase in price while the other included predictors are held constant. This is a model-based association, not proof that adding exactly 1 GB of RAM would cause a phone's retail price to increase by ₹637.
+The model intercept is approximately -₹245,481.79. The intercept is the predicted price when all model predictors are zero, a combination that is outside the realistic range of smartphone specifications. Therefore, the intercept has limited practical interpretation in this context.
+
+12. RAM-Only vs Multiple Linear Regression
+
+The RAM-only model has an R² of 0.2474, so RAM alone explains substantially less of the variation in smartphone prices than the combined model. Its MAE and RMSE are also higher. The multiple regression model therefore captures additional price variation by incorporating other smartphone specifications.
+The RAM-only model has a coefficient of approximately ₹5,960.95 per GB. This coefficient is different from the ₹637.05 coefficient in the multiple regression because the latter estimates RAM's partial association after accounting for the other selected predictors. The difference illustrates why a single-variable relationship and a multivariable regression coefficient should not be interpreted as the same quantity.
+
+13. Findings
+•	The dataset contains 758 smartphones across 27 variables.
+•	The average RAM capacity is approximately 7.99 GB, with a median of 8 GB.
+•	The average smartphone price is approximately ₹29,424, while the median is ₹18,999.
+•	The dataset contains considerable price variation, ranging from ₹4,040 to ₹229,900.
+•	The correlation between RAM and price is 0.5480, indicating a moderate positive association.
+•	Average smartphone price generally increases across the major RAM groups represented in the dataset.
+•	Storage and processor clock speed have stronger simple correlations with price than RAM in the numerical correlation matrix.
+•	Eighty observations were flagged as potential price outliers using the IQR method; the notebook retained them for analysis.
+•	Five rows were excluded from the regression dataset because front_camera_main_mp was missing.
+•	The Multiple Linear Regression model achieved R² = 0.6724 and Adjusted R² = 0.6465.
+•	The RAM-only model achieved R² = 0.2474, showing that RAM alone is not sufficient to explain most smartphone price variation in this dataset.
+•	The multiple regression model produced lower MAE and RMSE than the RAM-only model.
+
+14. Limitations
+•	The notebook does not document the original public URL or publisher of smartphones.csv, so the external dataset provenance cannot be independently established from the project file alone.
+•	The analysis is observational and therefore does not establish causal relationships between specifications and price.
+•	The regression model uses only selected numerical features. Categorical variables such as brand, processor name, processor brand and operating system were not included in the model.
+•	Potential multicollinearity exists because several smartphone specifications are correlated with one another. For example, RAM is correlated with rating and clock speed, while storage is strongly correlated with price.
+•	The IQR method flags 80 price observations as outliers, but the notebook does not perform a sensitivity analysis with and without those observations.
+•	The model is linear, so it may not fully capture nonlinear relationships or interactions among smartphone specifications.
+•	The dataset represents the products contained in the source file and should not automatically be treated as a complete representation of the entire smartphone market.
+
+15. Conclusion
+This project examined smartphone pricing using statistical analysis and supervised learning. The exploratory analysis found a moderate positive correlation of 0.5480 between RAM capacity and price, and average prices generally increased across the major RAM categories represented in the dataset. However, the RAM-only regression model achieved an R² of only 0.2474, showing that RAM by itself does not explain most of the variation in smartphone prices.
+The Multiple Linear Regression model, which incorporated RAM together with storage, rating, processor-related, display, battery, charging and camera features, achieved an R² of 0.6724 and an Adjusted R² of 0.6465. Its MAE was ₹10,069.18 and RMSE was ₹16,856.03 on the test set. The improvement over the RAM-only model demonstrates the importance of considering multiple smartphone specifications when analyzing or predicting price.
+Overall, the project supports the statistical observation that higher-RAM smartphones tend to be associated with higher prices in the analyzed dataset, while also showing that smartphone pricing is a multivariable problem. The results should be interpreted as statistical associations within the dataset rather than as causal effects.
+
+16. References
+•	Python documentation — Python programming language.
+•	Pandas documentation — DataFrame operations and statistical analysis.
+•	NumPy documentation — numerical computing in Python.
+•	Matplotlib documentation — data visualization in Python.
+•	Seaborn documentation — statistical data visualization.
+•	Scikit-learn documentation — train/test splitting, LinearRegression and regression evaluation metrics.
+•	Project dataset file: smartphones.csv, as loaded by Smartphone_Price_Analysis.ipynb. Original public dataset source is not specified in the notebook.
+ 
+Appendix A — Regression Model Summary
+Multiple Linear Regression predictors:
+ram_gb, storage_gb, rating_score, core_count, clock_speed_ghz, display_inches, refresh_rate_hz, battery_mah, charging_watt, rear_camera_main_mp, front_camera_main_mp
+Target: price_inr
+Train/test split: 80% / 20%
+Training observations: 602
+Testing observations: 151
+Model R²: 0.6724
+Adjusted R²: 0.6465
+MAE: ₹10,069.18
+RMSE: ₹16,856.03
+Appendix B — RAM-Only Model Summary
+Predictor: ram_gb
+Target: price_inr
+R²: 0.2474
+MAE: ₹13,688.65
+RMSE: ₹21,693.90
+RAM coefficient: ₹5,960.95 per GB
 
 
 
