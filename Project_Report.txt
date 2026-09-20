@@ -1,1 +1,43 @@
+1. Introduction
+
+Smartphones are available in a wide range of price segments, and their prices are associated with differences in memory, storage, processor performance, display characteristics, cameras, battery capacity and charging capability. RAM is one of the most visible specifications used to distinguish smartphone configurations. However, RAM is only one of many factors associated with the final price of a device.
+
+This project uses statistical analysis and supervised machine learning to study smartphone pricing. The main focus is the relationship between RAM capacity and price, followed by a Multiple Linear Regression model that incorporates additional numerical specifications. The project follows a data-analysis workflow consisting of data understanding, preprocessing, exploratory data analysis, model training, prediction and evaluation.
+
+2. Problem Statement
+
+To statistically analyze the relationship between smartphone RAM capacity and smartphone price, and to develop a supervised Multiple Linear Regression model that predicts smartphone price using RAM and other available numerical specifications.
+
+3. Objectives
+
+Understand the structure and characteristics of the smartphone dataset.
+
+Check the dataset for missing values and duplicate records.
+
+Identify potential price outliers using the Interquartile Range (IQR) method.
+
+Calculate descriptive statistics for important numerical variables such as RAM, storage and price.
+
+Explore the relationship between RAM capacity and smartphone price using statistical measures and visualizations.
+
+Analyze correlations among numerical smartphone specifications.
+
+Build a RAM-only linear regression model to examine how much price variation can be explained by RAM alone.
+
+Build a Multiple Linear Regression model using RAM and additional numerical smartphone specifications.
+
+Evaluate the models using R², Adjusted R², Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE).
+
+Interpret regression coefficients while recognizing that statistical association does not establish causation.
+
+4. Dataset Description
+
+The notebook loads a file named “smartphones.csv”. The notebook itself does not record the original public URL or publisher of the dataset, so this report does not assign an external source that is not documented in the project files.
+
+4. Dataset Description
+
+The notebook loads a file named “smartphones.csv”. The notebook itself does not record the original public URL or publisher of the dataset, so this report does not assign an external source that is not documented in the project files.
+
+
+
 
